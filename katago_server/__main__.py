@@ -1,5 +1,4 @@
 import argparse
-import sys
 
 
 def main():
@@ -24,8 +23,9 @@ def main():
         run_server(host=args.host, port=args.port, log_level=args.log_level)
 
     elif args.command == "mcp":
-        print("MCP server not yet implemented.", file=sys.stderr)
-        sys.exit(1)
+        from katago_server.mcp_server import run_mcp
+
+        run_mcp()
 
 
 if __name__ == "__main__":
