@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     katago_binary: str = "katago"
     analysis_config: Path = Path("config/analysis.cfg")
     model_path: Path = Path("models/default.bin.gz")
+    human_model_path: Path | None = None
 
     board_size_x: int = 19
     board_size_y: int = 19

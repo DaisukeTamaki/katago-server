@@ -165,6 +165,7 @@ All settings can be configured via environment variables with the `KATAGO_` pref
 | `KATAGO_KATAGO_BINARY` | `katago` | Path to KataGo executable |
 | `KATAGO_ANALYSIS_CONFIG` | `config/analysis.cfg` | Path to KataGo analysis config |
 | `KATAGO_MODEL_PATH` | `models/default.bin.gz` | Path to neural network model |
+| `KATAGO_HUMAN_MODEL_PATH` | _(none)_ | Path to human SL model (enables `humanSLProfile`) |
 | `KATAGO_HOST` | `0.0.0.0` | Server bind host |
 | `KATAGO_PORT` | `8000` | Server bind port |
 | `KATAGO_DEFAULT_KOMI` | `6.5` | Default komi |

@@ -1,0 +1,14 @@
+services:
+  katago:
+    build: .
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - KATAGO_MODEL_PATH=/app/models/default.bin.gz
+      # Uncomment to enable human SL analysis:
+      # - KATAGO_HUMAN_MODEL_PATH=/app/models/b18c384nbt-humanv0.bin.gz
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models:ro
+    restart: unless-stopped

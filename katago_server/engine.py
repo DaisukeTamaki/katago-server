@@ -71,6 +71,8 @@ class KataGoEngine:
             "-config", str(self._settings.analysis_config),
             "-model", str(self._settings.model_path),
         ]
+        if self._settings.human_model_path is not None:
+            cmd += ["-human-model", str(self._settings.human_model_path)]
         logger.info("Starting KataGo: %s", " ".join(cmd))
 
         self._process = subprocess.Popen(
