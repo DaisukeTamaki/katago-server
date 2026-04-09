@@ -13,9 +13,41 @@ Both interfaces share a single KataGo process, so you only need one GPU.
 
 - Python 3.11+
 - KataGo binary ([build instructions](https://github.com/lightvector/KataGo#compiling-katago) or [releases](https://github.com/lightvector/KataGo/releases))
-- A KataGo model file (download from [KataGo releases](https://github.com/lightvector/KataGo/releases))
+- A KataGo neural network model
 
-### Install
+### 1. Install KataGo
+
+On macOS:
+
+```bash
+brew install katago
+```
+
+Or download a release binary from [KataGo releases](https://github.com/lightvector/KataGo/releases) and place it on your PATH.
+
+### 2. Download a model
+
+Download a network from [KataGo releases](https://github.com/lightvector/KataGo/releases) and place it in the `models/` directory:
+
+```bash
+mkdir -p models
+# Example: download the b18c384 network
+curl -L -o models/default.bin.gz \
+  https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b18c384nbt-s9996604736-d4316597426.bin.gz
+```
+
+The `models/` directory is git-ignored so weights won't be committed.
+
+### 3. Configure
+
+```bash
+cp .env.example .env
+# Edit .env if needed (defaults work if katago is on PATH and model is at models/default.bin.gz)
+```
+
+Or set environment variables directly -- all settings use the `KATAGO_` prefix.
+
+### 4. Install
 
 ```bash
 pip install -e .
@@ -27,14 +59,9 @@ For development and testing:
 pip install -e ".[dev]"
 ```
 
-### Run the WebSocket server
+### 5. Run the WebSocket server
 
 ```bash
-# Set paths via environment variables
-export KATAGO_KATAGO_BINARY=katago
-export KATAGO_ANALYSIS_CONFIG=config/analysis.cfg
-export KATAGO_MODEL_PATH=/path/to/model.bin.gz
-
 katago-server serve
 ```
 

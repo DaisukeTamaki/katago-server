@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    model_config = {"env_prefix": "KATAGO_"}
+    model_config = {"env_prefix": "KATAGO_", "env_file": ".env", "env_file_encoding": "utf-8"}
 
     katago_binary: str = "katago"
     analysis_config: Path = Path("config/analysis.cfg")

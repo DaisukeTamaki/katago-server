@@ -51,6 +51,8 @@ class KataGoEngine:
         self._reader_task: asyncio.Task[None] | None = None
         self._stderr_task: asyncio.Task[None] | None = None
         self._started = asyncio.Event()
+        self._crash_event = asyncio.Event()
+        self._crash_reason: str | None = None
 
     async def __aenter__(self) -> KataGoEngine:
         await self.start()
@@ -83,6 +85,7 @@ class KataGoEngine:
             text=True,
             bufsize=1,
         )
+        self._crash_event = asyncio.Event()
         self._reader_task = asyncio.create_task(self._read_responses(), name="katago-reader")
         self._stderr_task = asyncio.create_task(self._read_stderr(), name="katago-stderr")
         self._started.set()
@@ -119,6 +122,15 @@ class KataGoEngine:
     @property
     def is_running(self) -> bool:
         return self._process is not None and self._process.poll() is None
+
+    @property
+    def crash_event(self) -> asyncio.Event:
+        """Set when KataGo exits unexpectedly. Use with asyncio.wait()."""
+        return self._crash_event
+
+    @property
+    def crash_reason(self) -> str | None:
+        return self._crash_reason
 
     # -- query submission ----------------------------------------------------
 
@@ -180,11 +192,20 @@ class KataGoEngine:
 
         while True:
             if self._process.poll() is not None:
-                logger.error("KataGo exited unexpectedly (code=%s)", self._process.returncode)
+                self._crash_reason = (
+                    f"KataGo exited unexpectedly (code={self._process.returncode})"
+                )
+                logger.error(self._crash_reason)
+                self._crash_event.set()
                 break
 
             line = await asyncio.to_thread(self._process.stdout.readline)
             if not line:
+                if self._process.poll() is not None and self._process.returncode != 0:
+                    self._crash_reason = (
+                        f"KataGo exited with code {self._process.returncode}"
+                    )
+                    self._crash_event.set()
                 logger.info("KataGo stdout closed")
                 break
 
