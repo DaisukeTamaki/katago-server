@@ -21,6 +21,12 @@ Both interfaces share a single KataGo process, so you only need one GPU.
 pip install -e .
 ```
 
+For development and testing:
+
+```bash
+pip install -e ".[dev]"
+```
+
 ### Run the WebSocket server
 
 ```bash
@@ -52,6 +58,45 @@ docker compose up
 ```
 
 See the [Dockerfile](Dockerfile) for details. The image builds KataGo from source with TensorRT support.
+
+## Testing
+
+The test suite is split into three layers:
+
+- Unit tests for coordinate conversion and query building
+- Engine tests with a mocked subprocess / mocked callbacks
+- WebSocket API tests with a mocked engine
+
+There is also an optional real-engine smoke test marked `e2e`.
+
+### Run tests
+
+```bash
+make install-dev
+make test
+```
+
+Or directly:
+
+```bash
+pytest -m "not e2e"
+```
+
+### Run real KataGo smoke test
+
+Set the required environment variables first:
+
+```bash
+export KATAGO_KATAGO_BINARY=katago
+export KATAGO_MODEL_PATH=/path/to/model.bin.gz
+export KATAGO_ANALYSIS_CONFIG=config/analysis.cfg
+```
+
+Then run:
+
+```bash
+make test-e2e
+```
 
 ## WebSocket API
 

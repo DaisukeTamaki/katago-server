@@ -13,7 +13,7 @@ from typing import Any
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 
-from katago_server.config import Settings, settings
+from katago_server.config import settings
 from katago_server.engine import KataGoEngine
 from katago_server.models import (
     AnalysisRequest,
@@ -107,7 +107,9 @@ async def analyze_position(
     include_ownership: bool = False,
     include_policy: bool = False,
 ) -> str:
-    """Analyze a Go board position, returning best moves with win rates, scores, and principal variations.
+    """Analyze a Go board position.
+
+    Returns best moves with win rates, scores, and principal variations.
 
     Args:
         moves: Game move sequence. Each dict has "color" ('b'/'w') and "position" [row, col].

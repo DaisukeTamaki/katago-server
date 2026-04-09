@@ -9,9 +9,15 @@ def main():
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     serve_parser = subparsers.add_parser("serve", help="Start the WebSocket API server")
-    serve_parser.add_argument("--host", default=None, help="Bind host (default: from config)")
-    serve_parser.add_argument("--port", type=int, default=None, help="Bind port (default: from config)")
-    serve_parser.add_argument("--log-level", default=None, help="Log level (default: from config)")
+    serve_parser.add_argument(
+        "--host", default=None, help="Bind host (default: from config)"
+    )
+    serve_parser.add_argument(
+        "--port", type=int, default=None, help="Bind port (default: from config)"
+    )
+    serve_parser.add_argument(
+        "--log-level", default=None, help="Log level (default: from config)"
+    )
 
     subparsers.add_parser("mcp", help="Start the MCP stdio server")
 
